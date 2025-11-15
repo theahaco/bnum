@@ -26,8 +26,12 @@
 #![cfg_attr(not(any(feature = "arbitrary", feature = "quickcheck")), no_std)]
 // TODO: MAKE SURE NO_STD IS ENABLED WHEN PUBLISHING NEW VERSION
 
+#[cfg(not(feature = "std"))]
+mod alloc;
+
+#[cfg(feature="no_alloc")]
 #[macro_use]
-extern crate alloc;
+mod macros;
 
 mod bint;
 mod buint;

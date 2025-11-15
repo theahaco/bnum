@@ -193,7 +193,7 @@ macro_rules! quickcheck_from_str_radix {
     { $primitive: ident, $sign1: literal | $sign2: literal } => {
         quickcheck::quickcheck! {
             fn quickcheck_from_str_radix(buf: crate::test::U8ArrayWrapper<{<crate::test::types::$primitive>::BITS as usize / 4}>, radix: crate::test::Radix<36>, leading_sign: bool) -> quickcheck::TestResult {
-                use alloc::string::String;
+                use crate::alloc::string::String;
 
                 let radix = radix.0;
 

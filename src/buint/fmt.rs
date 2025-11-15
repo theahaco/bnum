@@ -1,5 +1,5 @@
 use crate::digit;
-use alloc::string::String;
+use crate::alloc::string::String;
 use core::fmt::Write;
 use core::fmt::{Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
 
@@ -59,7 +59,7 @@ macro_rules! fmt {
                 #[inline]
                 fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
                     let decimal_str = self.to_str_radix(10);
-                    let buf = if decimal_str == "0" {
+                    let buf = if &decimal_str == "0" {
                         format!("{}{}0", 0, $e)
                     } else {
                         let exp = decimal_str.len() - 1;

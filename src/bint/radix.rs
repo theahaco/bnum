@@ -1,8 +1,8 @@
 use crate::doc;
 use crate::errors::ParseIntError;
 use crate::int::radix::assert_range;
-use alloc::string::String;
-use alloc::vec::Vec;
+use crate::alloc::string::String;
+use crate::alloc::vec::Vec;
 use core::num::IntErrorKind;
 
 macro_rules! radix {

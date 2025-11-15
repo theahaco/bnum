@@ -31,7 +31,7 @@ impl<const W: usize, const MB: usize> Float<W, MB> {
 #[test]
 fn test_parse() {
     use core::str::FromStr;
-    use alloc::string::String;
+    use crate::alloc::string::String;
 
     let digits = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8];
     let parsed = super::F32::parse(&digits, 0);

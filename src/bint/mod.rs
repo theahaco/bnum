@@ -27,9 +27,10 @@ use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "borsh")]
 use ::{
-    alloc::string::ToString,
     borsh::{BorshDeserialize, BorshSchema, BorshSerialize},
 };
+#[cfg(feature = "borsh")]
+use crate::alloc::string::ToString;
 
 use core::default::Default;
 

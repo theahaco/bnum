@@ -12,8 +12,11 @@ use crate::doc;
 use crate::errors::ParseIntError;
 use crate::int::radix::assert_range;
 use crate::ExpType;
-use alloc::string::String;
-use alloc::vec::Vec;
+use crate::alloc::string::String;
+use crate::alloc::vec::Vec;
+#[cfg(feature = "no_alloc")]
+use crate::alloc::prelude::*;
+
 use core::iter::Iterator;
 use core::num::IntErrorKind;
 use core::str::FromStr;
@@ -497,7 +500,7 @@ macro_rules! radix {
             pub fn to_radix_le(&self, radix: u32) -> Vec<u8> {
                 assert_range!(radix, 256);
                 if self.is_zero() {
-                    vec![0]
+                    Vec::from_slice(&[0])
                 } else if radix.is_power_of_two() {
                     if $Digit::BITS == 8 && radix == 256 {
                         return (&self.digits[0..=self.last_digit_index()])
@@ -702,7 +705,7 @@ crate::test::all_digit_tests! {
         let u = BUint::<100>::parse_bytes(src.as_bytes(), 35).unwrap();
         let v = BUint::<100>::from_str_radix(src, 35).unwrap();
         assert_eq!(u, v);
-        assert_eq!(v.to_str_radix(35), src);
+        assert_eq!(&v.to_str_radix(35), src);
 
         let bytes = b"345977fsuudf0350845";
         let option = BUint::<100>::parse_bytes(bytes, 20);

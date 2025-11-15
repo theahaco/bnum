@@ -67,7 +67,11 @@ pub(crate) use test_from_endian_slice;
 
 #[cfg(test)]
 #[cfg(feature = "nightly")]
-use alloc::vec::Vec;
+use crate::alloc::vec::Vec;
+
+#[cfg(test)]
+#[cfg(feature = "nightly")]
+use crate::alloc::prelude::*;
 
 #[cfg(test)]
 #[cfg(feature = "nightly")]
@@ -77,8 +81,9 @@ use core::ops::{Range, RangeFrom};
 #[cfg(test)]
 /// Pad a slice of bytes with leading pad bits so that the resulting vector of bytes represents the same integer as the original slice
 pub fn be_bytes_vec(bytes: &[u8], pad_bits: u8, pad_length: usize) -> Vec<u8> {
-    let mut bytes_vec = vec![pad_bits; pad_length];
-    bytes_vec.append(&mut bytes.to_vec());
+    let mut bytes_vec = Vec::with_capacity(pad_length + bytes.len());
+    bytes_vec.extend(core::iter::repeat(pad_bits).take(pad_length));
+    bytes_vec.extend_from_slice(bytes);
     bytes_vec
 }
 
