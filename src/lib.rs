@@ -28,7 +28,7 @@
 
 #[cfg(not(feature = "std"))]
 #[macro_use]
-use arrayvec::alloc;
+pub use arrayvec::alloc;
 
 
 mod bint;
