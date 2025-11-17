@@ -1,5 +1,8 @@
 use core::fmt::{Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
 
+#[cfg(feature = "no_alloc")]
+use crate::alloc::format;
+
 macro_rules! fmt_trait {
     ($BInt: ident, $trait: tt) => {
         impl<const N: usize> $trait for $BInt<N> {

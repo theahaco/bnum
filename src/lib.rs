@@ -27,11 +27,9 @@
 // TODO: MAKE SURE NO_STD IS ENABLED WHEN PUBLISHING NEW VERSION
 
 #[cfg(not(feature = "std"))]
-mod alloc;
-
-#[cfg(feature="no_alloc")]
 #[macro_use]
-mod macros;
+use arrayvec::alloc;
+
 
 mod bint;
 mod buint;

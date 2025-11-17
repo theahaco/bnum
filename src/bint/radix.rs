@@ -5,6 +5,9 @@ use crate::alloc::string::String;
 use crate::alloc::vec::Vec;
 use core::num::IntErrorKind;
 
+#[cfg(feature = "no_alloc")]
+use crate::alloc::format;
+
 macro_rules! radix {
     ($BUint: ident, $BInt: ident, $Digit: ident) => {
         #[doc = doc::radix::impl_desc!($BInt)]
