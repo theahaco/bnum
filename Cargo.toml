@@ -20,7 +20,7 @@ default = ["no_alloc"]
 nightly = []
 serde = ["dep:serde", "serde-big-array"]
 numtraits = ["num-integer", "num-traits"]
-no_alloc = ["dep:arrayvec", "arrayvec/no_alloc"]
+no_alloc = []
 alloc = ["dep:arrayvec", "arrayvec/alloc"]
 
 [dependencies]
