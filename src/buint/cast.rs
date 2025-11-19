@@ -205,7 +205,7 @@ macro_rules! cast {
                 }
             }
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> CastFrom<f32> for $BUint<N> {
             #[must_use = doc::must_use_op!()]
             #[inline]
@@ -213,7 +213,7 @@ macro_rules! cast {
                 crate::cast::float::cast_uint_from_float(value)
             }
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> CastFrom<f64> for $BUint<N> {
             #[must_use = doc::must_use_op!()]
             #[inline]

@@ -26,8 +26,9 @@
 #![cfg_attr(not(any(feature = "arbitrary", feature = "quickcheck")), no_std)]
 // TODO: MAKE SURE NO_STD IS ENABLED WHEN PUBLISHING NEW VERSION
 
-#[cfg(not(feature = "std"))]
-#[macro_use]
+// #[cfg(not(feature = "std"))]
+// #[macro_use]
+#[cfg(any(feature = "alloc", test))]
 pub use arrayvec::alloc;
 
 

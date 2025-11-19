@@ -1,10 +1,9 @@
 use crate::digit;
-use crate::alloc::string::String;
 use core::fmt::Write;
 use core::fmt::{Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
 
-#[cfg(feature = "no_alloc")]
-use crate::alloc::format;
+#[cfg(any(feature = "alloc", test))]
+use crate::alloc::{string::String, prelude::*};
 
 macro_rules! fmt {
     ($BUint: ident, $BInt: ident, $Digit: ident) => {
@@ -60,6 +59,7 @@ macro_rules! fmt {
         macro_rules! exp_fmt {
             ($e: expr) => {
                 #[inline]
+                #[cfg(any(feature = "alloc", test))]
                 fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
                     let decimal_str = self.to_str_radix(10);
                     let buf = if &decimal_str == "0" {
@@ -114,5 +114,5 @@ macro_rules! fmt {
 crate::test::all_digit_tests! {
     crate::int::fmt::tests!(utest);
 }
-
+#[cfg(any(feature = "alloc", test))]
 crate::macro_impl!(fmt);

@@ -18,6 +18,7 @@ macro_rules! impl_format_method {
     { $($name: ident : $format: literal), * } => {
         $(
             fn $name(&self, width: Option<u8>, extra: bool) -> crate::alloc::string::String {
+                use crate::alloc::prelude::*;
                 if let Some(width) = width {
                     if extra {
                         format!(concat!("{:+#0width$", $format, "}"), self, width = width as usize)

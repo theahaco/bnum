@@ -746,14 +746,14 @@ crate::test::all_digit_tests! {
 
     #[test]
     fn sum() {
-        let v = vec![&UTEST::ZERO, &UTEST::ONE, &UTEST::TWO, &UTEST::THREE, &UTEST::FOUR];
+        let v = [&UTEST::ZERO, &UTEST::ONE, &UTEST::TWO, &UTEST::THREE, &UTEST::FOUR];
         assert_eq!(UTEST::TEN, v.iter().copied().sum());
         assert_eq!(UTEST::TEN, v.into_iter().sum());
     }
 
     #[test]
     fn product() {
-        let v = vec![&UTEST::ONE, &UTEST::TWO, &UTEST::THREE];
+        let v = [&UTEST::ONE, &UTEST::TWO, &UTEST::THREE];
         assert_eq!(UTEST::SIX, v.iter().copied().sum());
         assert_eq!(UTEST::SIX, v.into_iter().sum());
     }

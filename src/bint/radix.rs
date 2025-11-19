@@ -1,11 +1,11 @@
 use crate::doc;
 use crate::errors::ParseIntError;
 use crate::int::radix::assert_range;
-use crate::alloc::string::String;
-use crate::alloc::vec::Vec;
+#[cfg(any(feature = "alloc", test))]
+use crate::alloc::{string::String,vec::Vec};
 use core::num::IntErrorKind;
 
-#[cfg(feature = "no_alloc")]
+#[cfg(any(feature = "alloc", test))]
 use crate::alloc::format;
 
 macro_rules! radix {
@@ -131,6 +131,7 @@ macro_rules! radix {
             /// For examples, see the
             #[doc = concat!("[`to_str_radix`](crate::", stringify!($BUint), "::to_str_radix) method documentation for [`", stringify!($BUint), "`](crate::", stringify!($BUint), ").")]
             #[inline]
+            #[cfg(any(feature = "alloc", test))]
             pub fn to_str_radix(&self, radix: u32) -> String {
                 if self.is_negative() {
                     format!("-{}", self.unsigned_abs().to_str_radix(radix))
@@ -148,6 +149,7 @@ macro_rules! radix {
             /// For examples, see the
             #[doc = concat!("[`to_radix_be`](crate::", stringify!($BUint), "::to_radix_be) method documentation for [`", stringify!($BUint), "`]")]
             #[inline]
+            #[cfg(any(feature = "alloc", test))]
             pub fn to_radix_be(&self, radix: u32) -> Vec<u8> {
                 self.bits.to_radix_be(radix)
             }
@@ -161,6 +163,7 @@ macro_rules! radix {
             /// For examples, see the
             #[doc = concat!("[`to_radix_le`](crate::", stringify!($BUint), "::to_radix_le) method documentation for [`", stringify!($BUint), "`](crate::", stringify!($BUint), ").")]
             #[inline]
+            #[cfg(any(feature = "alloc", test))]
             pub fn to_radix_le(&self, radix: u32) -> Vec<u8> {
                 self.bits.to_radix_le(radix)
             }
@@ -168,7 +171,7 @@ macro_rules! radix {
     };
 }
 
-#[cfg(test)]
+#[cfg(any(feature = "alloc", test))]
 crate::test::all_digit_tests! {
     use crate::test::{quickcheck_from_to_radix, test_bignum, self};
     use crate::test::types::itest;

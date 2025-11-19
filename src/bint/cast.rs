@@ -59,6 +59,7 @@ macro_rules! bint_cast_from_float {
     };
 }
 
+#[cfg(any(feature = "alloc", test))]
 pub(crate) use bint_cast_from_float;
 
 use crate::cast::CastFrom;
@@ -107,11 +108,11 @@ macro_rules! cast {
                 Self::from_bits($BUint::cast_from(from))
             }
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> CastFrom<f32> for $BInt<N> {
             crate::bint::cast::bint_cast_from_float!(f32, $BUint<N>);
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> CastFrom<f64> for $BInt<N> {
             crate::bint::cast::bint_cast_from_float!(f64, $BUint<N>);
         }

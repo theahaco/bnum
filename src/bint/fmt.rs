@@ -1,6 +1,6 @@
+#![cfg(any(feature = "alloc", test))]
 use core::fmt::{Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
 
-#[cfg(feature = "no_alloc")]
 use crate::alloc::format;
 
 macro_rules! fmt_trait {
@@ -13,7 +13,6 @@ macro_rules! fmt_trait {
         }
     };
 }
-
 macro_rules! fmt {
     ($BUint: ident, $BInt: ident, $Digit: ident) => {
         fmt_trait!($BInt, Binary);

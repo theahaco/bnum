@@ -12,10 +12,11 @@ use crate::doc;
 use crate::errors::ParseIntError;
 use crate::int::radix::assert_range;
 use crate::ExpType;
-use crate::alloc::string::String;
-use crate::alloc::vec::Vec;
-#[cfg(feature = "no_alloc")]
-use crate::alloc::prelude::*;
+// use crate::alloc::string::String;
+#[cfg(any(feature = "alloc", test))]
+use crate::alloc::{string::String, vec::Vec};
+// #[cfg(feature = "no_alloc")]
+// use crate::alloc::prelude::*;
 
 use core::iter::Iterator;
 use core::num::IntErrorKind;
@@ -450,6 +451,7 @@ macro_rules! radix {
             /// assert_eq!(n.to_str_radix(36), src);
             /// ```
             #[inline]
+            #[cfg(any(feature = "alloc", test))]
             pub fn to_str_radix(&self, radix: u32) -> String {
                 assert_range!(radix, 36);
                 let mut out = Self::to_radix_be(self, radix);
@@ -477,6 +479,7 @@ macro_rules! radix {
             /// let n = U512::from_radix_be(digits, 120).unwrap();
             /// assert_eq!(n.to_radix_be(120), digits);
             /// ```
+            #[cfg(any(feature = "alloc", test))]
             #[inline]
             pub fn to_radix_be(&self, radix: u32) -> Vec<u8> {
                 let mut v = self.to_radix_le(radix);
@@ -497,6 +500,7 @@ macro_rules! radix {
             /// let n = U512::from_radix_le(digits, 250).unwrap();
             /// assert_eq!(n.to_radix_le(250), digits);
             /// ```
+            #[cfg(any(feature = "alloc", test))]
             pub fn to_radix_le(&self, radix: u32) -> Vec<u8> {
                 assert_range!(radix, 256);
                 if self.is_zero() {
@@ -521,7 +525,7 @@ macro_rules! radix {
                     self.to_radix_digits_le(radix)
                 }
             }
-
+            #[cfg(any(feature = "alloc", test))]
             fn to_bitwise_digits_le(self, bits: u8) -> Vec<u8> {
                 let last_digit_index = self.last_digit_index();
                 let mask: $Digit = (1 << bits) - 1;
@@ -543,7 +547,7 @@ macro_rules! radix {
                 }
                 out
             }
-
+            #[cfg(any(feature = "alloc", test))]
             fn to_inexact_bitwise_digits_le(self, bits: u8) -> Vec<u8> {
                 let mask: $Digit = (1 << bits) - 1;
                 let digits = div_ceil(self.bits(), bits as ExpType);
@@ -572,7 +576,7 @@ macro_rules! radix {
                 }
                 out
             }
-
+            #[cfg(any(feature = "alloc", test))]
             fn to_radix_digits_le(self, radix: u32) -> Vec<u8> {
                 let radix_digits = div_ceil(self.bits(), ilog2(radix) as ExpType);
                 let mut out = Vec::with_capacity(radix_digits as usize);
@@ -696,6 +700,7 @@ crate::test::all_digit_tests! {
         assert_eq!(UTEST::from_radix_le(&[], 10), Some(UTEST::ZERO));
     }
 
+    #[cfg(any(feature = "alloc", test))]
     test::quickcheck_from_str_radix!(utest, "+" | "");
     test::quickcheck_from_str!(utest);
 
