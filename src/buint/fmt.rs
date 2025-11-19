@@ -3,13 +3,20 @@ use core::fmt::Write;
 use core::fmt::{Binary, Debug, Display, Formatter, LowerExp, LowerHex, Octal, UpperExp, UpperHex};
 
 #[cfg(any(feature = "alloc", test))]
-use crate::alloc::{string::String, prelude::*};
+use crate::alloc::{prelude::*, string::String};
 
 macro_rules! fmt {
     ($BUint: ident, $BInt: ident, $Digit: ident) => {
         macro_rules! fmt_method {
             ($format: expr, $format_pad: expr, $pad: expr, $prefix: expr) => {
+
+                #[cfg(not(any(feature = "alloc", test)))]
+                fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
+                    todo!();
+                }
+
                 #[inline]
+                #[cfg(any(feature = "alloc", test))]
                 fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
                     let mut format_string = String::new();
                     for digit in self.digits.iter().rev() {
@@ -52,6 +59,9 @@ macro_rules! fmt {
         impl<const N: usize> Display for $BUint<N> {
             #[inline]
             fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
+                #[cfg(not(any(feature = "alloc", test)))]
+                todo!();
+                #[cfg(any(feature = "alloc", test))]
                 f.pad_integral(true, "", &self.to_str_radix(10))
             }
         }
@@ -83,7 +93,7 @@ macro_rules! fmt {
                 }
             };
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> LowerExp for $BUint<N> {
             exp_fmt!("e");
         }
@@ -91,7 +101,7 @@ macro_rules! fmt {
         impl<const N: usize> LowerHex for $BUint<N> {
             fmt_method!("{:x}", "{:01$x}", digit::$Digit::HEX_PADDING, "0x");
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> Octal for $BUint<N> {
             #[inline]
             fn fmt(&self, f: &mut Formatter) -> core::fmt::Result {
@@ -99,7 +109,7 @@ macro_rules! fmt {
                 f.pad_integral(true, "0o", &string)
             }
         }
-
+        #[cfg(any(feature = "alloc", test))]
         impl<const N: usize> UpperExp for $BUint<N> {
             exp_fmt!("E");
         }
@@ -114,5 +124,5 @@ macro_rules! fmt {
 crate::test::all_digit_tests! {
     crate::int::fmt::tests!(utest);
 }
-#[cfg(any(feature = "alloc", test))]
+
 crate::macro_impl!(fmt);
